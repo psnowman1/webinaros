@@ -1,0 +1,299 @@
+@import "tailwindcss";
+
+@theme {
+  /* Light mode colors */
+  --color-background: #ffffff;
+  --color-background-secondary: #F9FAFB;
+  --color-foreground: #111827;
+  --color-foreground-secondary: #6B7280;
+  --color-border: #E5E7EB;
+  --color-border-secondary: #F3F4F6;
+
+  /* Primary colors */
+  --color-primary: #6366F1;
+  --color-primary-hover: #4F46E5;
+  --color-primary-foreground: #ffffff;
+
+  /* Status colors */
+  --color-success: #10B981;
+  --color-success-background: #ECFDF5;
+  --color-warning: #F59E0B;
+  --color-warning-background: #FFFBEB;
+  --color-error: #EF4444;
+  --color-error-background: #FEF2F2;
+  --color-info: #3B82F6;
+  --color-info-background: #EFF6FF;
+
+  /* Card colors */
+  --color-card: #ffffff;
+  --color-card-hover: #F9FAFB;
+
+  /* Popover */
+  --color-popover: #ffffff;
+  --color-popover-foreground: #111827;
+
+  /* Input colors */
+  --color-input: #ffffff;
+  --color-input-border: #D1D5DB;
+  --color-input-focus: #6366F1;
+
+  /* Muted */
+  --color-muted: #F3F4F6;
+  --color-muted-foreground: #6B7280;
+
+  /* Accent */
+  --color-accent: #F3F4F6;
+  --color-accent-foreground: #111827;
+
+  /* VIP */
+  --color-vip: #8B5CF6;
+  --color-vip-background: #F5F3FF;
+
+  /* Sidebar */
+  --color-sidebar: #F9FAFB;
+  --color-sidebar-border: #E5E7EB;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11", "ss01";
+  font-variation-settings: "opsz" 32;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-background-secondary);
+  color: var(--color-foreground);
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dark mode */
+.dark {
+  --color-background: #09090B;
+  --color-background-secondary: #0F0F12;
+  --color-foreground: #FAFAFA;
+  --color-foreground-secondary: #A1A1AA;
+  --color-border: #27272A;
+  --color-border-secondary: #1F1F23;
+
+  --color-card: #18181B;
+  --color-card-hover: #1F1F23;
+
+  --color-popover: #18181B;
+  --color-popover-foreground: #FAFAFA;
+
+  --color-input: #18181B;
+  --color-input-border: #3F3F46;
+
+  --color-muted: #27272A;
+  --color-muted-foreground: #A1A1AA;
+
+  --color-accent: #27272A;
+  --color-accent-foreground: #FAFAFA;
+
+  --color-success-background: #052E16;
+  --color-warning-background: #451A03;
+  --color-error-background: #450A0A;
+  --color-info-background: #172554;
+  --color-vip-background: #2E1065;
+
+  --color-sidebar: #18181B;
+  --color-sidebar-border: #27272A;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
+/* Better text selection */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* Remove default button styles */
+button {
+  font-family: inherit;
+}
+
+/* Remove default focus outlines - components handle their own focus styles */
+:focus {
+  outline: none;
+}
+
+/* Remove all purple focus rings from form elements */
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible,
+button:focus,
+button:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible,
+[role="combobox"]:focus,
+[role="combobox"]:focus-visible,
+[role="listbox"]:focus,
+[role="listbox"]:focus-visible,
+[role="option"]:focus,
+[role="option"]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Utility classes */
+.truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* React Flow custom styles - n8n horizontal style */
+.react-flow__node {
+  cursor: grab;
+}
+
+.react-flow__node:active {
+  cursor: grabbing;
+}
+
+.react-flow__node.selected {
+  z-index: 10;
+}
+
+.react-flow__edge-path {
+  stroke: var(--color-border);
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path,
+.react-flow__edge:focus .react-flow__edge-path,
+.react-flow__edge:focus-visible .react-flow__edge-path {
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+}
+
+.react-flow__connection-line {
+  stroke: var(--color-primary);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+}
+
+.react-flow__handle {
+  transition: all 0.15s ease;
+}
+
+.react-flow__handle:hover {
+  transform: scale(1.3);
+  background: var(--color-primary) !important;
+}
+
+.react-flow__controls {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.react-flow__controls-button {
+  background: var(--color-card);
+  border-color: var(--color-border);
+  color: var(--color-foreground);
+  width: 28px;
+  height: 28px;
+}
+
+.react-flow__controls-button:hover {
+  background: var(--color-accent);
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor;
+  max-width: 14px;
+  max-height: 14px;
+}
+
+/* Minimap styling */
+.react-flow__minimap {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
