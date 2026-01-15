@@ -71,12 +71,15 @@ export type ErrorCode =
 /**
  * Structured error type used across the application.
  * All API errors should conform to this interface.
+ * Implements Error interface for compatibility.
  */
-export interface ApiError {
+export interface ApiError extends Error {
   /** Machine-readable error code */
   code: ErrorCode
   /** Human-readable error message suitable for display to users */
   message: string
+  /** Error name (required by Error interface) */
+  name: string
   /** HTTP status code if applicable */
   statusCode?: number
   /** Additional context for debugging (not shown to users) */
@@ -93,9 +96,10 @@ export interface ApiError {
 export function createApiError(
   code: ErrorCode,
   message: string,
-  options: Partial<Omit<ApiError, 'code' | 'message'>> = {}
+  options: Partial<Omit<ApiError, 'code' | 'message' | 'name'>> = {}
 ): ApiError {
   return {
+    name: 'ApiError',
     code,
     message,
     retryable: options.retryable ?? false,
@@ -155,6 +159,7 @@ export function isApiError(error: unknown): error is ApiError {
   return (
     typeof error === 'object' &&
     error !== null &&
+    'name' in error &&
     'code' in error &&
     'message' in error &&
     'retryable' in error

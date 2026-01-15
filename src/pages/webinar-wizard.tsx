@@ -49,7 +49,6 @@ export function WebinarWizardPage() {
     type: 'live' as const,
     ghlRegistrationWebhook: '',
     ghlAttendanceWebhook: '',
-    ghlTag: '',
   })
 
   const updateForm = (key: string, value: string) => {
@@ -127,11 +126,9 @@ export function WebinarWizardPage() {
       status: 'scheduled',
       ghl_registration_webhook: formData.ghlRegistrationWebhook || null,
       ghl_attendance_webhook: formData.ghlAttendanceWebhook || null,
-      ghl_tag: formData.ghlTag || null,
-      zoom_webinar_id: zoomData.zoomWebinarId || null,
+      zoom_meeting_id: zoomData.zoomWebinarId || null,
       zoom_join_url: zoomData.zoomJoinUrl || null,
       zoom_start_url: zoomData.zoomStartUrl || null,
-      zoom_registration_url: zoomData.zoomRegistrationUrl || null,
     })
 
     if (error) {
@@ -314,19 +311,6 @@ export function WebinarWizardPage() {
                       </div>
                     )}
                   </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="ghlTag">GHL Tag</Label>
-                  <Input
-                    id="ghlTag"
-                    value={formData.ghlTag}
-                    onChange={(e) => updateForm('ghlTag', e.target.value)}
-                    placeholder="webinar-attendee"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Tag to apply to registrants in GoHighLevel
-                  </p>
                 </div>
 
                 <div className="space-y-2">

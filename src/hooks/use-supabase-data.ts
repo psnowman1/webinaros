@@ -20,7 +20,7 @@
 
 import { useCallback } from 'react'
 import { useWebinars, useWebinar, useCreateWebinar, useUpdateWebinar, useDeleteWebinar } from './use-webinars'
-import { useIntegrations, useCreateIntegration, useUpdateIntegration } from './use-integrations'
+import { useIntegrations, useCreateIntegration, useUpdateIntegration, type IntegrationInsert } from './use-integrations'
 import { useRegistrants, useCreateRegistrant } from './use-registrants'
 import { useCurrentWorkspaceId } from '@/contexts/auth-context'
 import type { Webinar, Registrant, Integration } from '@/types/database'
@@ -82,8 +82,8 @@ export function useIntegrationsLegacy() {
   const updateMutation = useUpdateIntegration(workspaceId)
 
   const createIntegration = useCallback(
-    async (integration: Omit<Integration, 'id' | 'created_at' | 'updated_at' | 'workspace_id'>) => {
-      const res = await createMutation.mutate(integration as Parameters<typeof createMutation.mutate>[0])
+    async (integration: Omit<IntegrationInsert, 'workspace_id'>) => {
+      const res = await createMutation.mutate(integration)
       return {
         data: res.success ? res.data : null,
         error: res.success ? null : new Error(String(res.error)),

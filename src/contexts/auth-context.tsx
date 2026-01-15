@@ -98,7 +98,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Refs for cleanup
   const isMountedRef = useRef(true)
-  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const loadingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Computed current workspace
   const currentWorkspace =
@@ -225,7 +225,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, 10000) // 10 second timeout
 
     // Subscribe to auth state changes
-    const unsubscribe = authService.onAuthStateChange((event, newSession) => {
+    const unsubscribe = authService.onAuthStateChange((_event, newSession) => {
       if (!isMountedRef.current) return
 
       // Update session and user state immediately (synchronous)

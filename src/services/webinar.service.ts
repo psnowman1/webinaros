@@ -161,7 +161,7 @@ export const webinarService = {
 
       const { data, error } = await supabase
         .from('webinars')
-        .insert(webinar)
+        .insert(webinar as unknown as never)
         .select()
         .single()
 
@@ -192,7 +192,7 @@ export const webinarService = {
     try {
       const { data, error } = await supabase
         .from('webinars')
-        .update(updates)
+        .update(updates as unknown as never)
         .eq('id', id)
         .select()
         .single()
@@ -246,7 +246,7 @@ export const webinarService = {
     try {
       const { error } = await supabase.rpc('increment_registrant_count', {
         webinar_id: id,
-      })
+      } as never)
 
       if (error) {
         // If RPC doesn't exist, fall back to direct update
@@ -256,12 +256,11 @@ export const webinarService = {
           .eq('id', id)
           .single()
 
-        if (webinar) {
-          await supabase
-            .from('webinars')
-            .update({ registrant_count: webinar.registrant_count + 1 })
-            .eq('id', id)
-        }
+        const currentCount = (webinar as { registrant_count: number } | null)?.registrant_count ?? 0
+        await supabase
+          .from('webinars')
+          .update({ registrant_count: currentCount + 1 } as unknown as never)
+          .eq('id', id)
       }
 
       return ok(undefined)
@@ -286,10 +285,11 @@ export const webinarService = {
         return err(toApiError(error))
       }
 
+      const webinars = data as { status: string }[] | null
       const stats = {
-        total: data?.length ?? 0,
-        scheduled: data?.filter((w) => w.status === 'scheduled').length ?? 0,
-        completed: data?.filter((w) => w.status === 'completed').length ?? 0,
+        total: webinars?.length ?? 0,
+        scheduled: webinars?.filter((w) => w.status === 'scheduled').length ?? 0,
+        completed: webinars?.filter((w) => w.status === 'completed').length ?? 0,
       }
 
       return ok(stats)

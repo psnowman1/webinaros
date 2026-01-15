@@ -72,7 +72,7 @@ export function SettingsPage() {
     setIsUpdating(true)
     const { error } = await supabase
       .from('profiles')
-      .update({ full_name: fullName })
+      .update({ full_name: fullName } as unknown as never)
       .eq('id', profile.id)
 
     if (error) {
@@ -116,7 +116,7 @@ export function SettingsPage() {
         industry: editData.industry || null,
         website: editData.website || null,
         brand_color: editData.brandColor,
-      })
+      } as unknown as never)
       .eq('id', editingWorkspace.id)
 
     if (error) {

@@ -125,7 +125,7 @@ export function WorkspaceWizardPage() {
           website: wizardData.website || null,
           brand_color: wizardData.brandColor,
           logo_url: wizardData.logoUrl || null,
-        })
+        } as unknown as never)
         .select()
         .single()
 
@@ -140,14 +140,15 @@ export function WorkspaceWizardPage() {
       }
 
       // Add current user as owner
+      const workspaceData = workspace as { id: string }
       const { error: memberError } = await supabase
         .from('workspace_members')
         .insert({
-          workspace_id: workspace.id,
+          workspace_id: workspaceData.id,
           user_id: user.id,
           role: 'owner',
           accepted_at: new Date().toISOString(),
-        })
+        } as unknown as never)
 
       if (memberError) {
         console.error('Member creation error:', memberError)
@@ -161,7 +162,7 @@ export function WorkspaceWizardPage() {
 
       // Refresh workspaces and set as current
       await refreshWorkspaces()
-      setCurrentWorkspaceId(workspace.id)
+      setCurrentWorkspaceId(workspaceData.id)
 
       addToast({ title: 'Workspace created successfully!', variant: 'success' })
       navigate('/')

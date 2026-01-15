@@ -6,7 +6,7 @@
  */
 
 import { supabase } from '@/lib/supabase'
-import type { Database } from '@/types/database'
+import type { Database, Json } from '@/types/database'
 import type { Result } from '@/types/api'
 import { ok, err, toApiError, createApiError } from '@/types/api'
 
@@ -159,7 +159,7 @@ export const integrationService = {
 
       const { data, error } = await supabase
         .from('integrations')
-        .insert(integration)
+        .insert(integration as unknown as never)
         .select()
         .single()
 
@@ -193,7 +193,7 @@ export const integrationService = {
         .update({
           ...updates,
           updated_at: new Date().toISOString(),
-        })
+        } as unknown as never)
         .eq('id', id)
         .select()
         .single()
@@ -256,12 +256,13 @@ export const integrationService = {
         return err(toApiError(fetchError))
       }
 
+      const currentSettings = (current as { settings: Json } | null)?.settings
       const mergedSettings = {
-        ...(current?.settings as Record<string, unknown> || {}),
+        ...((currentSettings as Record<string, unknown>) || {}),
         ...settings,
       }
 
-      return this.update(id, { settings: mergedSettings })
+      return this.update(id, { settings: mergedSettings as Json })
     } catch (error) {
       return err(toApiError(error))
     }
@@ -278,11 +279,12 @@ export const integrationService = {
         .eq('id', id)
         .single()
 
+      const errorCount = (current as { error_count: number } | null)?.error_count ?? 0
       return this.update(id, {
         status: 'error',
         last_error: errorMessage,
         last_error_at: new Date().toISOString(),
-        error_count: (current?.error_count ?? 0) + 1,
+        error_count: errorCount + 1,
       })
     } catch (error) {
       return err(toApiError(error))
@@ -296,7 +298,7 @@ export const integrationService = {
     try {
       const { error } = await supabase
         .from('integrations')
-        .update({ last_used_at: new Date().toISOString() })
+        .update({ last_used_at: new Date().toISOString() } as unknown as never)
         .eq('id', id)
 
       if (error) {

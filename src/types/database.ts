@@ -619,6 +619,9 @@ export type Database = {
       integration_status: 'active' | 'inactive' | 'error' | 'expired'
       message_type: 'confirmation' | '24hr_reminder' | '1hr_reminder' | '15min_reminder' | 'starting_now' | 'replay' | 'no_show' | 'custom'
     }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
 }
 

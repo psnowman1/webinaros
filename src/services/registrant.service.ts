@@ -211,7 +211,7 @@ export const registrantService = {
 
       const { data, error } = await supabase
         .from('registrants')
-        .insert(normalizedRegistrant)
+        .insert(normalizedRegistrant as unknown as never)
         .select()
         .single()
 
@@ -242,7 +242,7 @@ export const registrantService = {
     try {
       const { data, error } = await supabase
         .from('registrants')
-        .update(updates)
+        .update(updates as unknown as never)
         .eq('id', id)
         .select()
         .single()
@@ -368,7 +368,13 @@ export const registrantService = {
         return err(toApiError(error))
       }
 
-      const registrants = data ?? []
+      type RegistrantRow = {
+        is_vip: boolean
+        status: string
+        has_purchased: boolean
+        purchase_amount: number | null
+      }
+      const registrants = (data ?? []) as RegistrantRow[]
 
       const stats: RegistrantStats = {
         total: registrants.length,
